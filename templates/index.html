@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Personalized Diet Plan Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --spinach: #17402F;
+            --leaf: #2E7D4F;
+            --mango: #F5A524;
+            --mango-dark: #E0920F;
+            --mint: #EAF4EA;
+            --paper: #FBFDFA;
+            --ink: #14281F;
+            --muted: #5B7064;
+            --line: #D5E3D6;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+            color: var(--ink);
+            background: var(--paper);
+            line-height: 1.55;
+        }
+
+        .shell {
+            display: grid;
+            grid-template-columns: minmax(320px, 5fr) 7fr;
+            min-height: 100vh;
+        }
+
+        /* ---------- Left brand panel ---------- */
+        .brand {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            background: var(--spinach);
+            color: #fff;
+            padding: 3.5rem 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+
+        .brand::before {
+            content: "";
+            position: absolute;
+            width: 520px;
+            height: 520px;
+            right: -200px;
+            bottom: -180px;
+            border-radius: 50%;
+            background: var(--leaf);
+            opacity: .35;
+        }
+
+        .logo {
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+            position: relative;
+        }
+
+        .logo-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--mango);
+        }
+
+        .brand-copy { position: relative; max-width: 30rem; }
+
+        .brand h1 {
+            font-family: "Fraunces", Georgia, serif;
+            font-weight: 700;
+            font-size: clamp(2.2rem, 3.4vw, 3.3rem);
+            line-height: 1.1;
+            letter-spacing: -.01em;
+            margin-bottom: 1.1rem;
+        }
+
+        .brand p {
+            color: #CFE3D5;
+            font-size: 1.05rem;
+            max-width: 26rem;
+        }
+
+        .plate {
+            position: relative;
+            width: min(260px, 60%);
+            align-self: flex-start;
+            margin-top: 2rem;
+        }
+
+        .plate svg { width: 100%; height: auto; display: block; }
+
+        /* ---------- Form panel ---------- */
+        .form-side {
+            padding: 3.5rem 3rem 3rem;
+            display: flex;
+            justify-content: center;
+            background:
+                radial-gradient(circle at 100% 0%, var(--mint) 0, transparent 45%),
+                var(--paper);
+        }
+
+        .form-wrap { width: 100%; max-width: 640px; }
+
+        .form-head h2 {
+            font-family: "Fraunces", Georgia, serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: .35rem;
+        }
+
+        .form-head p { color: var(--muted); margin-bottom: 2.2rem; }
+
+        fieldset {
+            border: none;
+            margin-bottom: 2.2rem;
+        }
+
+        legend {
+            font-family: "Fraunces", Georgia, serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--leaf);
+            padding-left: .8rem;
+            border-left: 4px solid var(--mango);
+            margin-bottom: 1.1rem;
+            line-height: 1.2;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.1rem 1.2rem;
+        }
+
+        .full { grid-column: 1 / -1; }
+
+        .field label {
+            display: block;
+            font-size: .92rem;
+            font-weight: 500;
+            margin-bottom: .4rem;
+        }
+
+        .field .opt { color: var(--muted); font-weight: 400; }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            font: inherit;
+            color: var(--ink);
+            background: #fff;
+            border: 1.5px solid var(--line);
+            border-radius: 10px;
+            padding: .72rem .9rem;
+            transition: border-color .15s, box-shadow .15s;
+        }
+
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            padding-right: 2.4rem;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%232E7D4F' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right .9rem center;
+            cursor: pointer;
+        }
+
+        input:hover, select:hover { border-color: #AFC9B4; }
+
+        input:focus-visible, select:focus-visible {
+            outline: none;
+            border-color: var(--leaf);
+            box-shadow: 0 0 0 4px rgba(46, 125, 79, .18);
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            font: inherit;
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: var(--ink);
+            background: var(--mango);
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: background .15s, transform .1s, box-shadow .15s;
+            box-shadow: 0 6px 18px rgba(245, 165, 36, .35);
+        }
+
+        input[type="submit"]:hover {
+            background: var(--mango-dark);
+            transform: translateY(-1px);
+        }
+
+        input[type="submit"]:active { transform: translateY(0); }
+
+        input[type="submit"]:focus-visible {
+            outline: 3px solid var(--spinach);
+            outline-offset: 3px;
+        }
+
+        .disclaimer {
+            margin-top: 1.4rem;
+            font-size: .83rem;
+            color: var(--muted);
+            padding: .9rem 1rem;
+            background: var(--mint);
+            border-radius: 10px;
+        }
+
+        /* ---------- Single entrance moment ---------- */
+        @media (prefers-reduced-motion: no-preference) {
+            .brand-copy { animation: rise .7s ease-out both; }
+            @keyframes rise {
+                from { opacity: 0; transform: translateY(14px); }
+                to   { opacity: 1; transform: none; }
+            }
+        }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 900px) {
+            .shell { grid-template-columns: 1fr; }
+            .brand {
+                position: relative;
+                height: auto;
+                padding: 2rem 1.5rem 2.4rem;
+                gap: 1.6rem;
+            }
+            .plate { display: none; }
+            .form-side { padding: 2rem 1.25rem 2.5rem; }
+        }
+
+        @media (max-width: 520px) {
+            .grid { grid-template-columns: 1fr; }
+            .form-head h2 { font-size: 1.65rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="shell">
+
+        <aside class="brand">
+            <div class="logo"><span class="logo-dot"></span> NutriPlan</div>
+
+            <div class="brand-copy">
+                <h1>Eat for the goal you actually have.</h1>
+                <p>Share your body stats, routine and food preferences. You get a weekly or monthly meal plan built around them.</p>
+            </div>
+
+            <div class="plate" aria-hidden="true">
+                <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="120" cy="120" r="116" fill="#F3F8F2"/>
+                    <circle cx="120" cy="120" r="92" fill="none" stroke="#D5E3D6" stroke-width="2"/>
+                    <path d="M120 120 L120 36 A84 84 0 0 1 192 78 Z" fill="#F5A524"/>
+                    <path d="M120 120 L192 78 A84 84 0 0 1 192 162 Z" fill="#2E7D4F"/>
+                    <path d="M120 120 L192 162 A84 84 0 0 1 120 204 Z" fill="#E4572E"/>
+                    <path d="M120 120 L120 204 A84 84 0 0 1 48 162 Z" fill="#9CCB6B"/>
+                    <path d="M120 120 L48 162 A84 84 0 0 1 48 78 Z" fill="#17402F"/>
+                    <path d="M120 120 L48 78 A84 84 0 0 1 120 36 Z" fill="#F7D488"/>
+                    <circle cx="120" cy="120" r="22" fill="#F3F8F2"/>
+                </svg>
+            </div>
+        </aside>
+
+        <main class="form-side">
+            <div class="form-wrap">
+                <div class="form-head">
+                    <h2>Build your diet plan</h2>
+                    <p>It takes about a minute. Every field is required unless marked optional.</p>
+                </div>
+
+                <form action="" method="post">
+
+                    <fieldset>
+                        <legend>About you</legend>
+                        <div class="grid">
+                            <div class="field full">
+                                <label for="name">Your name</label>
+                                <input type="text" id="name" name="name" required maxlength="50" autocomplete="name">
+                            </div>
+                            <div class="field">
+                                <label for="age">Age</label>
+                                <input type="number" id="age" name="age" required min="10" max="100">
+                            </div>
+                            <div class="field">
+                                <label for="gender">Gender</label>
+                                <select id="gender" name="gender" required>
+                                    <option value="" disabled selected>Select</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label for="height">Height (cm)</label>
+                                <input type="number" id="height" name="height" required min="100" max="250" step="0.1">
+                            </div>
+                            <div class="field">
+                                <label for="weight">Weight (kg)</label>
+                                <input type="number" id="weight" name="weight" required min="25" max="300" step="0.1">
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Goal and activity</legend>
+                        <div class="grid">
+                            <div class="field">
+                                <label for="target">Goal</label>
+                                <select id="target" name="target" required>
+                                    <option value="" disabled selected>Select</option>
+                                    <option value="weight gain">Weight gain</option>
+                                    <option value="weight loss">Weight loss</option>
+                                    <option value="maintain weight">Maintain weight</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label for="workout_minutes">Workout time (minutes per day)</label>
+                                <input type="number" id="workout_minutes" name="workout_minutes" required min="5" max="300">
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Food and plan</legend>
+                        <div class="grid">
+                            <div class="field">
+                                <label for="meal">Meal preference</label>
+                                <select id="meal" name="meal" required>
+                                    <option value="" disabled selected>Select</option>
+                                    <option value="vegetarian">Vegetarian</option>
+                                    <option value="non-Vegetarian">Non-vegetarian</option>
+                                    <option value="vegan">Vegan</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label for="plan_type">Plan type</label>
+                                <select id="plan_type" name="plan_type" required>
+                                    <option value="" disabled selected>Select</option>
+                                    <option value="weekly">Weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                </select>
+                            </div>
+                            <div class="field full">
+                                <label for="allergies">Allergies or medical conditions <span class="opt">(optional)</span></label>
+                                <input type="text" id="allergies" name="allergies" maxlength="300" placeholder="e.g. peanuts, lactose intolerance, diabetes">
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <input type="submit" value="Generate my plan">
+                </form>
+
+                <p class="disclaimer">This plan is for general guidance only and is not medical advice. Consult a doctor or dietitian, especially if you have a medical condition.</p>
+            </div>
+        </main>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Your Personalized Diet Plan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --spinach: #17402F;
+            --leaf: #2E7D4F;
+            --mango: #F5A524;
+            --mango-dark: #E0920F;
+            --mint: #EAF4EA;
+            --paper: #FBFDFA;
+            --ink: #14281F;
+            --muted: #5B7064;
+            --line: #D5E3D6;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+            color: var(--ink);
+            background: var(--mint);
+            line-height: 1.6;
+        }
+
+        /* ---------- Header band ---------- */
+        .top {
+            background: var(--spinach);
+            color: #fff;
+            padding: 1.2rem 1.5rem 7rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .top::after {
+            content: "";
+            position: absolute;
+            width: 460px;
+            height: 460px;
+            right: -140px;
+            top: -200px;
+            border-radius: 50%;
+            background: var(--leaf);
+            opacity: .35;
+        }
+
+        .top-inner {
+            max-width: 980px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+            margin-bottom: 2.6rem;
+            color: #fff;
+            text-decoration: none;
+            width: fit-content;
+        }
+
+        .logo-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--mango);
+        }
+
+        .top h1 {
+            font-family: "Fraunces", Georgia, serif;
+            font-weight: 700;
+            font-size: clamp(2rem, 4.4vw, 3rem);
+            line-height: 1.1;
+            letter-spacing: -.01em;
+            margin-bottom: .6rem;
+        }
+
+        .top p { color: #CFE3D5; font-size: 1.05rem; }
+
+        /* ---------- Plan card ---------- */
+        .page {
+            max-width: 980px;
+            margin: -4.5rem auto 3rem;
+            padding: 0 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 18px 50px rgba(23, 64, 47, .14);
+            border-top: 5px solid var(--mango);
+            padding: 2.4rem 2.6rem;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .8rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            font: inherit;
+            font-weight: 600;
+            font-size: .98rem;
+            padding: .8rem 1.4rem;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: background .15s, transform .1s, border-color .15s;
+        }
+
+        .btn-primary { background: var(--mango); color: var(--ink); }
+        .btn-primary:hover { background: var(--mango-dark); transform: translateY(-1px); }
+
+        .btn-ghost { background: #fff; color: var(--spinach); border-color: var(--line); }
+        .btn-ghost:hover { border-color: var(--leaf); }
+
+        .btn:focus-visible { outline: 3px solid var(--spinach); outline-offset: 3px; }
+
+        /* ---------- Styles for whatever HTML the plan contains ---------- */
+        .plan {
+            overflow-x: auto;
+            max-width: 100%;
+            font-size: 1.02rem;
+        }
+
+        .plan h1, .plan h2, .plan h3, .plan h4 {
+            font-family: "Fraunces", Georgia, serif;
+            color: var(--spinach);
+            line-height: 1.25;
+            margin: 1.8rem 0 .7rem;
+        }
+
+        .plan > :first-child { margin-top: 0; }
+
+        .plan h1 { font-size: 1.9rem; }
+
+        .plan h2 {
+            font-size: 1.5rem;
+            padding-bottom: .4rem;
+            border-bottom: 2px solid var(--mint);
+        }
+
+        .plan h3 {
+            font-size: 1.2rem;
+            color: var(--leaf);
+            padding-left: .7rem;
+            border-left: 4px solid var(--mango);
+        }
+
+        .plan h4 { font-size: 1.05rem; color: var(--leaf); }
+
+        .plan p { margin: 0 0 .9rem; max-width: 72ch; }
+
+        .plan strong, .plan b { color: var(--spinach); font-weight: 600; }
+
+        .plan ul, .plan ol { margin: 0 0 1rem 1.3rem; }
+
+        .plan li { margin-bottom: .35rem; padding-left: .2rem; }
+
+        .plan li::marker { color: var(--mango-dark); font-weight: 600; }
+
+        .plan hr {
+            border: none;
+            border-top: 1px solid var(--line);
+            margin: 1.8rem 0;
+        }
+
+        .plan table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0 1.6rem;
+            font-size: .95rem;
+            min-width: 520px;
+        }
+
+        .plan th {
+            background: var(--spinach);
+            color: #fff;
+            text-align: left;
+            font-weight: 600;
+            padding: .8rem 1rem;
+        }
+
+        .plan th:first-child { border-top-left-radius: 10px; }
+        .plan th:last-child { border-top-right-radius: 10px; }
+
+        .plan td {
+            padding: .75rem 1rem;
+            border-bottom: 1px solid var(--line);
+            vertical-align: top;
+        }
+
+        .plan tbody tr:nth-child(even) td { background: #F6FAF6; }
+        .plan tbody tr:hover td { background: var(--mint); }
+
+        .disclaimer {
+            margin-top: 1.5rem;
+            font-size: .85rem;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 640px) {
+            .top { padding-bottom: 6rem; }
+            .card { padding: 1.5rem 1.2rem; border-radius: 14px; }
+            .btn { width: 100%; justify-content: center; }
+            .page { padding: 0 1rem; }
+        }
+
+        /* ---------- Print: just the plan ---------- */
+        @media print {
+            body { background: #fff; }
+            .top, .actions, .disclaimer { display: none; }
+            .page { margin: 0; padding: 0; max-width: none; }
+            .card { box-shadow: none; border-top: none; padding: 0; }
+            .plan th { background: #eee !important; color: #000; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="top">
+        <div class="top-inner">
+            <a class="logo" href="/"><span class="logo-dot"></span> NutriPlan</a>
+            <h1>Your personalized diet plan</h1>
+            <p>Built from your goal, routine and food preferences.</p>
+        </div>
+    </header>
+
+    <main class="page">
+        <section class="card">
+            <div class="plan">
+                {{ result | safe }}
+            </div>
+
+            <div class="actions">
+                <a class="btn btn-primary" href="/">Create another plan</a>
+                <button class="btn btn-ghost" type="button" onclick="window.print()">Print or save as PDF</button>
+            </div>
+        </section>
+
+        <p class="disclaimer">This plan is for general guidance only and is not medical advice. Consult a doctor or dietitian, especially if you have a medical condition.</p>
+    </main>
+
+</body>
+</html>
